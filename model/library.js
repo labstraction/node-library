@@ -53,18 +53,44 @@ export default class Library {
         for (const user of this.users) {
             console.log(user.toString());
         }
-    } 
+    }
+
+    getUserById(id){
+        const user = this.users.find(u => u.id === id);
+        return user;
+    }
+
+    getBookByIsbn(isbn){
+        const book = this.books.find(b => b.isbn === isbn);
+        return book;
+    }
+
+    borrowBoowWithIdAndIsbn(id, isbn){
+        const user = this.getUserById(id);
+        const book = this.getBookByIsbn(isbn);
+
+        console.log(user);
+        console.log(book);
+
+        if (user && book) {
+            const result = this.borrowBook(user, book);
+            return result;
+        } else {
+            return false;
+        }
+    }
     
     borrowBook(user, book){
         const isAvailable = this.isBookAvailable(book.isbn);
         if(!isAvailable){
-            console.log('libro non disponibile')
+            return false;
         } else {
             user.borrowBook(book);
             const isPhysical = book instanceof PhysicalBook;
             if (isPhysical) {
                 book.isBorrowed = true;
             }
+            return true;
         }
     } 
     
